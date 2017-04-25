@@ -1,9 +1,38 @@
+@font-face {
+  font-family: "Flaticon";
+  src: url("../fonts/Flaticon.eot");
+  src: url("../fonts/Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/Flaticon.woff") format("woff"),
+       url("../fonts/Flaticon.ttf") format("truetype"),
+       url("../fonts/Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("../fonts/Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+body{
+  overflow: hidden;
+  user-select: none;
+}
+*:focus{
+  outline:none;
+}
 .layer{
   position: absolute;
   width: 100vw;
   height: 100vh;
   top: 0;
   left: 0;
+  pointer-events: none;
+}
+.layer *{
+  pointer-events: auto;
 }
 
 /* Menu */
@@ -13,32 +42,234 @@
   width: 60vmin;
   height: 60vmin;
   transform: translate(-50%, -50%);
-}
-.orbit{
-  border: 1px solid red;
-  border-radius: 50%;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transition: transform .5s ease-in-out;
-  .list{
-    border: 1px solid red;
+  transition: top .3s ease-in-out;
+  .orbit{
     border-radius: 50%;
     position: absolute;
-    left: 50%;
-    width: 15vmin;
-    height: 15vmin;
-    line-height: 15vmin;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity .3s ease-in-out;
-    &.enabled{
-      opacity: 1;
-    }
-    &.out{
+    width: 100%;
+    height: 100%;
+    transition: transform .5s ease-in-out;
+    pointer-events: none;
+    .list{
+      color: white;
+      font-family: Flaticon;
+      font-size: 5em;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 15vmin;
+      height: 15vmin;
+      line-height: 15vmin;
+      text-align: center;
+      transform: translate(-50%, -50%);
       opacity: 0;
-      transform: translate(-50%, -100%);
+      will-change: transform, top;
+      transition: border-color .2s ease, transform .4s ease-in-out, opacity .3s ease-in-out, top .2s ease-in-out;
+      pointer-events: auto;
+      &:hover, &.active{
+        border-color: white;
+      }
+      &.enabled{
+        opacity: 1;
+      }
+      &.out{
+        pointer-events: none;
+        opacity: 0;
+        top: -15%;
+      }
+      &.focus{
+        background-color: rgba(255,255,255,.2);
+      }
+      &.active{
+        top: 50%;
+        border-color: transparent;
+        pointer-events: none;
+        background: transparent !important;
+      }
     }
+  }
+}
+
+/* Background */
+@keyframes imageappear {
+  from{opacity: 0}
+  to{opacity: 1}
+}
+.image{
+  opacity: 1;
+  width: 100%;
+  top:0;
+  left:0;
+  position: absolute;
+  height: 100%;
+  background-position: 50% 50%;
+  background-size: cover;
+  animation: imageappear .3s ease-in-out 1 forwards;
+}
+
+/* Controls */
+.controls{
+    .panel{
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      .container{
+        position: absolute;
+        width: 42vmin;
+        height: 42vmin;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .orbit{
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        width: 42vmin;
+        height: 5vmin;
+      }
+      input{
+        width: 10vmin;
+        background: transparent;
+        -webkit-appearance: none;
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          border-radius: 50%;
+        }
+        &::-ms-track {
+          width: 100%;
+          cursor: pointer;
+          background: transparent;
+          border-color: transparent;
+          color: transparent;
+        }
+      }
+    }
+    .gooze{
+      background: rgba(0,0,0,.2);
+      filter: contrast(140);
+      &::before, *{
+        filter: blur(15px);
+        opacity: 0;
+        transition: opacity .2s ease-in-out;
+      }
+      &::before{
+        content: "";
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border: 2em solid white;
+        border-radius: 50%;
+        width: 20vmin;
+        height: 20vmin;
+        transform: translate(-50%, -50%);
+      }
+      input::-webkit-slider-thumb{
+        width:5vmin;
+        height:5vmin;
+        background: white;
+        outline: .5em solid white;
+      }
+    }
+    .actions{
+      .orbit{
+        div{
+          opacity: 0;
+          pointer-events: none;
+          position: absolute;
+          width: 5vmin;
+          height: 5vmin;
+          line-height: 5vmin;
+          box-shadow:  0 0 2px 2px black;
+          border-radius: 50%;
+          top: 0;
+          filter: drop-shadow(0 0 10px white);
+          transition: background-color .2s ease-in-out, opacity .3 ease-in-out;
+          font-family: "Flaticon";
+          font-size: 150%;
+          text-align: center;
+          span{
+            pointer-events: none;
+            transition: all .6s cubic-bezier(0.82, -0.04, 0.51, 2.63);
+            position: absolute;
+            opacity: 0;
+            bottom: 30%;
+            border-radius: 50%;
+            border:3px solid black;
+            width: 5vmin;
+            height: 5vmin;
+            line-height: 5vmin;
+            text-align: center;
+            display: block;
+            background: black;
+            font-size: 70%;
+            color: white;
+            &::after{
+              content: "";
+              display: block;
+              position: absolute;
+              top: 100%;
+              width:2vmin;
+              height:2vmin;
+              background: black;
+              left: 50%;
+              transform: translate(-50%, -50%) rotate(45deg);
+            }
+          }
+        }
+        input:active + div,
+        input:hover + div{
+          background: gray;
+        }
+        input:active + div span,
+        input:hover + div span{
+          opacity: .7;
+          bottom: calc(100% + 1vmin);
+        }
+      }
+      input::-webkit-slider-thumb{
+        width:5vmin;
+        height:5vmin;
+        background: transparent;
+        cursor:pointer;
+        opacity: 0;
+        transition: opacity .2s ease-in-out;
+      }
+    }
+  .deactivate{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 6vmin;
+    height: 6vmin;
+    line-height: 6vmin;
+    text-align: center;
+    transform: translate(-50%, -50%) rotate(180deg) scale(.4);
+    border-radius: 50%;
+    border: 4px solid white;
+    opacity: 0;
+    cursor: pointer;
+    transition: all .4s ease-in-out;
+    font-family: "Flaticon";
+    color: white;
+  }
+}
+.soundmode{
+  .controls .orbit div{
+    opacity: 1 !important;
+  }
+  .gooze *,
+  .gooze::before,
+  input::-webkit-slider-thumb{
+    opacity: 1 !important;
+  }
+  .deactivate{
+    opacity: 1;
+    top: 10%;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
   }
 }

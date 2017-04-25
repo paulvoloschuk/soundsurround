@@ -26,7 +26,7 @@ var path = {
     css: 'build/css/',
     img: 'build/img/',
     fonts: 'build/fonts/',
-    video: 'build/video/'
+    audio: 'build/audio/'
   },
   src: {
     html: 'src/templates/[^_]*.html',
@@ -34,7 +34,7 @@ var path = {
     style: 'src/styles/**/[^_]*.*',
     img: 'src/img/**/*.*',
     fonts: 'src/fonts/**/*.*',
-    video: 'src/video/**/*.*'
+    audio: 'src/audio/**/*.*'
   },
   watch: {
     html: 'src/templates/*.html',
@@ -42,7 +42,7 @@ var path = {
     style: 'src/styles/**/*.*',
     img: 'src/img/**/*.*',
     fonts: 'src/fonts/**/*.*',
-    video: 'src/video/**/*.*'
+    audio: 'src/audio/**/*.*'
   },
   clean: './build'
 };
@@ -105,16 +105,16 @@ gulp.task('fonts:build', function() {
   gulp.src(path.src.fonts)
     .pipe(gulp.dest(path.build.fonts))
 });
-gulp.task('video:build', function() {
-  gulp.src(path.src.video)
-    .pipe(gulp.dest(path.build.video))
+gulp.task('audio:build', function() {
+  gulp.src(path.src.audio)
+    .pipe(gulp.dest(path.build.audio))
 });
 gulp.task('build', [
   'html:build',
   'js:build',
   'style:build',
   'fonts:build',
-  'video:build',
+  'audio:build',
   'image:build'
 ]);
 gulp.task('watch', function(){
@@ -133,8 +133,8 @@ gulp.task('watch', function(){
   watch([path.watch.fonts], function(event, cb) {
     gulp.start('fonts:build');
   });
-  watch([path.watch.video], function(event, cb) {
-    gulp.start('video:build');
+  watch([path.watch.audio], function(event, cb) {
+    gulp.start('audio:build');
   });
 });
 gulp.task('webserver', function () {
