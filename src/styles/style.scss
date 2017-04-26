@@ -15,9 +15,8 @@
     src: url("../fonts/Flaticon.svg#Flaticon") format("svg");
   }
 }
-
+/* Common */
 body{
-  overflow: hidden;
   user-select: none;
 }
 *:focus{
@@ -29,6 +28,7 @@ body{
   height: 100vh;
   top: 0;
   left: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 .layer *{
@@ -37,17 +37,15 @@ body{
 
 /* Menu */
 .menu{
-  top: 50%;
-  left: 50%;
-  width: 60vmin;
-  height: 60vmin;
-  transform: translate(-50%, -50%);
   transition: top .3s ease-in-out;
   .orbit{
+    top: 50%;
+    left: 50%;
+    margin: -35vmin 0 0 -35vmin;
     border-radius: 50%;
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 70vmin;
+    height: 70vmin;
     transition: transform .5s ease-in-out;
     pointer-events: none;
     .list{
@@ -60,9 +58,9 @@ body{
       position: absolute;
       left: 50%;
       top: 0;
-      width: 15vmin;
-      height: 15vmin;
-      line-height: 15vmin;
+      width: 2em;
+      height: 2em;
+      line-height: 2em;
       text-align: center;
       transform: translate(-50%, -50%);
       opacity: 0;
@@ -112,27 +110,31 @@ body{
 
 /* Controls */
 .controls{
+  pointer-events: none;
     .panel{
       pointer-events: none;
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
       .container{
+        pointer-events: none;
         position: absolute;
-        width: 42vmin;
-        height: 42vmin;
+        width: 20em;
+        height: 20em;
         top: 48%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        margin: -10em 0 0 -10em;
       }
       .orbit{
         pointer-events: none;
         position: absolute;
         top: 50%;
-        width: 42vmin;
-        height: 5vmin;
+        width: 100%;
+        height: 2.5em;
       }
       input{
-        width: 10vmin;
+        width: 5em;
         background: transparent;
         -webkit-appearance: none;
         &::-webkit-slider-thumb {
@@ -150,9 +152,8 @@ body{
     }
     .gooze{
       background: rgba(0,0,0,.2);
-      filter: contrast(140);
+      filter: blur(15px) contrast(40);
       &::before, *{
-        filter: blur(15px);
         opacity: 0;
         transition: opacity .2s ease-in-out;
       }
@@ -162,28 +163,30 @@ body{
         position: absolute;
         top: 50%;
         left: 50%;
-        border: 2em solid white;
+        border: 1em solid white;
         border-radius: 50%;
-        width: 20vmin;
-        height: 20vmin;
+        width: 10em;
+        height: 10em;
         transform: translate(-50%, -50%);
       }
       input::-webkit-slider-thumb{
-        width:5vmin;
-        height:5vmin;
+        width: 2.5em;
+        height: 2.5em;
         background: white;
-        outline: .5em solid white;
+        border-radius: 50%;
+        box-shadow: 0 0 20px white, 0 0 10px white;
       }
     }
     .actions{
       .orbit{
+        // box-shadow: 0 0 2px 2px red;
         div{
           opacity: 0;
           pointer-events: none;
           position: absolute;
-          width: 5vmin;
-          height: 5vmin;
-          line-height: 5vmin;
+          width: 1.7em;
+          height: 1.7em;
+          line-height: 1.7em;
           box-shadow:  0 0 2px 2px black;
           border-radius: 50%;
           top: 0;
@@ -197,12 +200,14 @@ body{
             transition: all .6s cubic-bezier(0.82, -0.04, 0.51, 2.63);
             position: absolute;
             opacity: 0;
-            bottom: 30%;
+            bottom: 40%;
+            left: 50%;
+            transform: translateX(-50%);
             border-radius: 50%;
-            border:3px solid black;
-            width: 5vmin;
-            height: 5vmin;
-            line-height: 5vmin;
+            border: 3px solid black;
+            width: 3em;
+            height: 3em;
+            line-height: 3em;
             text-align: center;
             display: block;
             background: black;
@@ -213,8 +218,8 @@ body{
               display: block;
               position: absolute;
               top: 100%;
-              width:2vmin;
-              height:2vmin;
+              width: 1em;
+              height: 1em;
               background: black;
               left: 50%;
               transform: translate(-50%, -50%) rotate(45deg);
@@ -222,13 +227,15 @@ body{
           }
         }
         input:active + div,
-        input:hover + div{
+        input:hover + div,
+        input.focus + div{
           background: gray;
         }
         input:active + div span,
-        input:hover + div span{
+        input:hover + div span,
+        input.focus + div span{
           opacity: .7;
-          bottom: calc(100% + 1vmin);
+          bottom: calc(100% + 1em);
         }
       }
       input::-webkit-slider-thumb{
@@ -244,9 +251,9 @@ body{
     position: absolute;
     top: 40%;
     left: 50%;
-    width: 6vmin;
-    height: 6vmin;
-    line-height: 6vmin;
+    width: 4em;
+    height: 4em;
+    line-height: 4em;
     text-align: center;
     transform: translate(-50%, -50%) rotate(180deg) scale(.4);
     border-radius: 50%;
@@ -258,7 +265,27 @@ body{
     color: white;
   }
 }
+.copyright{
+  position:absolute;
+  width:100vw;
+  bottom: 0;
+  padding: 1em;
+  box-sizing: border-box;
+  text-align: center;
+  color: white;
+  opacity: .7;
+  transform: translateY(100%);
+  transition: transform .2s ease-in-out;
+  a{
+    color: lightsteelblue;
+    text-decoration: none;
+    border-bottom: 1px dashed lightsteelblue;
+  }
+}
 .soundmode{
+  .container{
+    pointer-events: all;
+  }
   .controls .orbit div{
     opacity: 1 !important;
   }
@@ -271,5 +298,9 @@ body{
     opacity: 1;
     top: 10%;
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  .copyright{
+    transform: translateY(0);
+    transition-delay: .5s;
   }
 }

@@ -1,15 +1,7 @@
 "use strict";
-
-window.vmin = function(value){
-  let c = (document.documentElement.clientWidth > document.documentElement.clientHeight)
-    ? document.documentElement.clientHeight / 100
-    : document.documentElement.clientWidth / 100;
-  return c * value;
-}
 window.reverse = function(value){
   return 100 - value;
 }
-console.log(vmin(1));
 
 window.onload = function(){
   // m_Menu
@@ -22,10 +14,10 @@ window.onload = function(){
         item.firstElementChild.onclick = function(e){
           menu.activate(this);
         }
-        item.firstElementChild.onmouseover = function(){
-          menu.focus = this;
+        item.firstElementChild.onmouseover = function(e){
+          if (e) menu.focus = this;
           menu.items.forEach((item) => {
-            if (item.firstElementChild == menu.focus)
+            if (item.firstElementChild === menu.focus)
               item.firstElementChild.classList.add('focus');
             else
               item.firstElementChild.classList.remove('focus');
@@ -54,6 +46,7 @@ window.onload = function(){
       controls.generate(list.parentElement.classList[1]);
     },
     deactivate: function(){
+      controls.items = [];
       this.items.forEach((item, i) => {
         item.firstElementChild.classList.remove('out', 'active');
       });
@@ -99,14 +92,17 @@ window.onload = function(){
       gooze: document.querySelector('.gooze .container')
     },
     icons: [],
+    items: [],
+    focus: false,
     generate: function(scheme){
+      let saltDeg = Math.floor(Math.random() * (120 - 5 + 1)) + 5;
       player.config[scheme].forEach((item, i) => {
         let orbit = document.createElement('div'),
             input = document.createElement('input'),
             icon = document.createElement('div');
-        orbit.style.transform = 'rotate(' + (360 / player.config[scheme].length * i) + 'deg)';
-        icon.style.transform = 'rotate(' + (360 / player.config[scheme].length * i * -1) + 'deg)';
-        icon.style.left = (vmin(reverse(item.value) / 10) - vmin(5 * reverse(item.value) / 100)) + 'px';
+        orbit.style.transform = 'rotate(' + (360 / player.config[scheme].length * i - saltDeg) + 'deg)';
+        icon.style.transform = 'rotate(' + (360 / player.config[scheme].length * i * -1 + saltDeg) + 'deg)';
+        icon.style.left = 'calc(' + reverse(item.value)/100 + 'em + ' + reverse(item.value)/10 + 'px)';
         icon.innerHTML = '&#xf' + player.config[scheme][i].icon + ';';
         icon.appendChild(document.createElement('span'));
         icon.firstElementChild.innerHTML = item.value + '%';
@@ -114,14 +110,19 @@ window.onload = function(){
         input.setAttribute('value', reverse(item.value))
         input.type = 'range';
         input.oninput = function(){
-          document.querySelector('.gooze .' + this.className).value = this.value;
-          this.nextSibling.style.left = (vmin(this.value / 10) - vmin(5 * this.value / 100)) + 'px';
+          console.log(this.value);
+          document.querySelector('.gooze .' + this.classList[0]).value = this.value;
+          this.nextSibling.style.left = 'calc(' + this.value/100 + 'em + ' + this.value/10 + 'px)';
           this.nextSibling.firstElementChild.innerHTML = reverse(this.value) + '%';
+        }
+        input.onmouseover = function(){
+          controls.items.forEach((item) => item.classList.remove('focus'));
         }
         orbit.appendChild(input);
         orbit.appendChild(icon);
         orbit.className = 'orbit';
         controls.container.controls.appendChild(orbit);
+        controls.items.push(input);
       });
       controls.container.gooze.innerHTML = controls.container.controls.innerHTML;
     }
@@ -216,6 +217,56 @@ window.onload = function(){
   // Init
   document.getElementsByClassName('deactivate')[0].onclick = function(){
     menu.deactivate();
+  }
+  this.em = () => parseInt(getComputedStyle(controls.container.controls).fontSize);
+
+  // Keyboard control
+  window.onkeydown = function(e){
+    let soundmode = document.body.classList.contains('soundmode');
+    // Escape
+    if(['Backspace', 'Escape'].indexOf(e.code) + 1  && soundmode) {
+        menu.deactivate();
+    // Forwards navigation
+  } else if(e.code == 'ArrowRight' && !soundmode) {
+        menu.focus = (menu.focus && !!menu.focus.parentElement.nextSibling)
+          ? menu.focus.parentElement.nextSibling.firstElementChild
+          : menu.items[0].firstElementChild;
+        menu.focus.onmouseover();
+    // Backwards navigation
+  } else if(e.code == 'ArrowLeft' && !soundmode) {
+        menu.focus = (menu.focus && !!menu.focus.parentElement.previousSibling)
+          ? menu.focus.parentElement.previousSibling.firstElementChild
+          : menu.items[menu.items.length - 1].firstElementChild;
+        menu.focus.onmouseover();
+    // Volume Up
+    } else if(e.code == 'ArrowUp' && soundmode && controls.focus){
+      controls.focus.value -= 5;
+      controls.focus.oninput();
+    // Volume Down
+    } else if(e.code == 'ArrowDown' && soundmode && controls.focus){
+      controls.focus.value = +controls.focus.value + 5;
+      controls.focus.oninput();
+    // Prev sound
+    } else if(e.code == 'ArrowLeft' && soundmode){
+      controls.focus = (controls.focus && controls.items.indexOf(controls.focus) !== 0)
+        ? controls.items[controls.items.indexOf(controls.focus) - 1]
+        : controls.items[controls.items.length - 1];
+      controls.items.forEach((item) => item.classList.remove('focus'));
+      controls.focus.classList.add('focus');
+    // Next sound
+    } else if(e.code == 'ArrowRight' && soundmode){
+      controls.focus = (controls.focus && controls.items.indexOf(controls.focus) !== controls.items.length - 1)
+        ? controls.items[controls.items.indexOf(controls.focus) + 1]
+        : controls.items[0];
+      controls.items.forEach((item) => item.classList.remove('focus'));
+      controls.focus.classList.add('focus');
+    // Enter soundmode
+    } else if(['Enter', 'Space'].indexOf(e.code) + 1 && !soundmode) {
+        menu.activate(menu.focus);
+    // Prevent default
+    } else if(['Tab', 'Shift'].indexOf(e.code) + 1) {
+      e.preventDefault();
+    }
   }
   menu.appear();
 }
