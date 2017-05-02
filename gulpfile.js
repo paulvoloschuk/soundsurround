@@ -1,10 +1,9 @@
 'use strict';
 
 var gulp = require('gulp'),
-  babel = require('gulp-babel'),
-  uglify = require('gulp-uglify'),
   watch = require('gulp-watch'),
   prefixer = require('gulp-autoprefixer'),
+  minify = require('gulp-minifier'),
   cssmin = require('gulp-minify-css'),
   sass = require('gulp-sass'),
   sourcemaps = require('gulp-sourcemaps'),
@@ -13,10 +12,16 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   htmlmin = require('gulp-htmlmin'),
   pngquant = require('imagemin-pngquant'),
-  browserify = require('gulp-browserify'),
   rigger = require('gulp-rigger'),
   rimraf = require('rimraf'),
   browserSync = require("browser-sync"),
+
+  browserify = require('browserify'),
+  babelify = require('babelify'),
+  source = require('vinyl-source-stream'),
+  buffer = require('vinyl-buffer'),
+  util = require('gulp-util'),
+
   reload = browserSync.reload;
 
 var path = {
@@ -26,7 +31,8 @@ var path = {
     css: 'build/css/',
     img: 'build/img/',
     fonts: 'build/fonts/',
-    audio: 'build/audio/'
+    audio: 'build/audio/',
+    config: 'build/config/'
   },
   src: {
     html: 'src/templates/[^_]*.html',
@@ -34,7 +40,8 @@ var path = {
     style: 'src/styles/**/[^_]*.*',
     img: 'src/img/**/*.*',
     fonts: 'src/fonts/**/*.*',
-    audio: 'src/audio/**/*.*'
+    audio: 'src/audio/**/*.*',
+    config: 'src/config/**/*.*'
   },
   watch: {
     html: 'src/templates/*.html',
@@ -42,7 +49,8 @@ var path = {
     style: 'src/styles/**/*.*',
     img: 'src/img/**/*.*',
     fonts: 'src/fonts/**/*.*',
-    audio: 'src/audio/**/*.*'
+    audio: 'src/audio/**/*.*',
+    config: 'src/config/**/*.*'
   },
   clean: './build'
 };
@@ -64,16 +72,18 @@ gulp.task('html:build', function () {
     .pipe(reload({stream: true}));
 });
 gulp.task('js:build', function () {
-  gulp.src(path.src.js)
-    .pipe(babel({presets: ['es2015']}))
-    .pipe(browserify({
-          insertGlobals : true,
-          debug : !gulp.env.production
-        }))
+  return browserify({
+    entries: 'src/js/index.js',
+    debug: true,
+    transform: [babelify.configure({
+      presets: ['latest', 'minify']
+    })]
+  }).bundle()
+    .pipe(source(path.src.js))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(rigger())
-    .pipe(sourcemaps.init())
     .pipe(concat("main.js"))
-    // .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(path.build.js))
     .pipe(reload({stream: true}));
@@ -109,12 +119,17 @@ gulp.task('audio:build', function() {
   gulp.src(path.src.audio)
     .pipe(gulp.dest(path.build.audio))
 });
+gulp.task('config:build', function() {
+  gulp.src(path.src.config)
+    .pipe(gulp.dest(path.build.config))
+});
 gulp.task('build', [
   'html:build',
   'js:build',
   'style:build',
   'fonts:build',
   'audio:build',
+  'config:build',
   'image:build'
 ]);
 gulp.task('watch', function(){
@@ -135,6 +150,9 @@ gulp.task('watch', function(){
   });
   watch([path.watch.audio], function(event, cb) {
     gulp.start('audio:build');
+  });
+  watch([path.watch.config], function(event, cb) {
+    gulp.start('config:build');
   });
 });
 gulp.task('webserver', function () {

@@ -11,59 +11,33 @@
       <script src="ld.json" type="application/ld+json"></script>
       <link rel="stylesheet" href="./css/normalize.css">
       <link rel="stylesheet" href="./css/style.css">
-      <!-- <link rel="stylesheet" href="./css/flaticon.css"> -->
       <link rel="stylesheet" href="./css/mobile.css" media="screen and (max-width: 960px)">
       <script src="./js/main.js"></script>
 
   </head>
   <body>
-    <div class="layer background">
-      <div class="image" style="background-image:url(/img/bg/default.jpg)"></div>
+    <div id="system" class="layer">
     </div>
-    <div class="layer menu">
-      <div class="orbit forest">
-        <div class="list">
-          &#xf10d;
+    <div id="background" class="layer">
+      <div class="image" style="background-image: url(img/default.jpg)"></div>
+    </div>
+    <div id="controls" class="layer">
+    </div>
+    <div id="info" class="layer">
+      <div class="background">
+        <div class="tooltip">
+          <div class="container">
+            //= _help.html
+          </div>
         </div>
-      </div>
-      <div class="orbit desert">
-        <div class="list">
-          &#xf10e;
-        </div>
-      </div>
-      <div class="orbit village">
-        <div class="list">
-          &#xf111;
-        </div>
-      </div>
-      <div class="orbit sea">
-        <div class="list">
-          &#xf110;
-        </div>
-      </div>
-      <div class="orbit rain">
-        <div class="list">
-          &#xf10f;
+        <div class="button">
+          <span class="closed">?</span>
+          <span class="opened">&#xf100;</span>
         </div>
       </div>
     </div>
-    <div class="layer controls">
-      <div class="panel gooze">
-        <div class="container">
-
-        </div>
-      </div>
-      <div class="panel actions">
-        <div class="container">
-
-        </div>
-      </div>
-      <div class="deactivate">
-        &#xf100;
-      </div>
-    </div>
-    <div class="layer loader">
-      <p class="copyright">Powered by <a rel="author" href="http://paul-voloschuk.com">Paul Voloschuk</a></p>
+    <div id="preloader" class="layer initiation">
+      //= _preloader.html
     </div>
   </body>
 </html>
