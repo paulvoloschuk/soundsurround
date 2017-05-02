@@ -1,0 +1,101 @@
+{
+  "rain": [
+    "10f",
+    {
+      "value": 60,
+      "name": "drops",
+      "icon": "102",
+      "link": "rain_main.mp3"
+    },
+    {
+      "value": 80,
+      "name": "thunder",
+      "icon": "103",
+      "link": "rain_thunder.mp3"
+    },
+    {
+      "value": 10,
+      "name": "hits",
+      "icon": "101",
+      "link": "rain_roof.mp3"
+    },
+    {
+      "value": 80,
+      "name": "wind",
+      "icon": "10b",
+      "link": "autumn_forest_wind.mp3"
+    }
+  ],
+  "forest": [
+    "10d",
+    {
+      "value": 60,
+      "name": "birds",
+      "icon": "105",
+      "link": "summer_forest_birds_close.mp3"
+    },
+    {
+      "value": 30,
+      "name": "water",
+      "icon": "104",
+      "link": "summer_forest_river.mp3"
+    },
+    {
+      "value": 10,
+      "name": "campfire",
+      "icon": "109",
+      "link": "fireplace_fire.mp3"
+    }
+  ],
+  "sea": [
+    "110",
+    {
+      "value": 10,
+      "name": "waves",
+      "icon": "108",
+      "link": "sea_main.mp3"
+    },
+    {
+      "value": 15,
+      "name": "birds",
+      "icon": "106",
+      "link": "sea_seagulls.mp3"
+    },
+    {
+      "value": 20,
+      "name": "rocks",
+      "icon": "107",
+      "link": "sea_close.mp3"
+    }
+  ],
+  "village": [
+    "111",
+    {
+      "value": 20,
+      "name": "common",
+      "icon": "109",
+      "link": "farm_main.mp3"
+    },
+    {
+      "value": 20,
+      "name": "cock",
+      "icon": "10c",
+      "link": "farm_petuhi.mp3"
+    },
+    {
+      "value": 10,
+      "name": "animals",
+      "icon": "10a",
+      "link": "farm_animals.mp3"
+    }
+  ],
+  "desert": [
+    "10e",
+    {
+      "value": 80,
+      "name": "common",
+      "icon": "10b",
+      "link": "autumn_forest_wind.mp3"
+    }
+  ]
+}
